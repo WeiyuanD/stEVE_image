@@ -1,9 +1,6 @@
-# FROM nvidia/cuda:11.7.1-runtime-ubuntu20.04
+# FROM nvidia/cuda:11.6.2-runtime-ubuntu20.04
 # FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
-# FROM nvidia/cuda:12.4.0-runtime-ubuntu22.04
-FROM nvidia/cuda:12.6.0-runtime-ubuntu24.04
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM nvidia/cuda:12.4.0-runtime-ubuntu22.04
 
 # Install APT tools and repos
 RUN apt-get update && apt-get upgrade -y
@@ -15,7 +12,7 @@ RUN apt-get update && apt-get upgrade -y
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# Install system tools (might want to check python and pybind version)
+# Install system tools
 RUN apt-get install -y \
     git \
     net-tools \
@@ -25,16 +22,11 @@ RUN apt-get install -y \
     unzip \
     patchelf \
     pybind11-dev \
-    # python3-pip \
-    python3-tk \
-    tk \
-    build-essential \
-    software-properties-common
+    python3-pip
 
 # #Install SOFA Dependencies
 RUN apt install -y \
-    gcc-11 \
-    g++-11 \ 
+    gcc-10 \
     cmake \
     # qt5-default \
     qtbase5-dev \
@@ -42,7 +34,7 @@ RUN apt install -y \
     qt5-qmake \
     qtbase5-dev-tools \
     libboost-all-dev \
-    python3.12-dev \
+    python3-dev \
     libpng-dev \
     libjpeg-dev \
     libtiff-dev \
@@ -51,69 +43,47 @@ RUN apt install -y \
     libeigen3-dev \
     libtinyxml2-dev
 
-# # Set python3 and pip to Python 3.12 for consistency
-# RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 && \
-#     update-alternatives --install /usr/bin/pip3 pip3 /usr/local/bin/pip3.12 1
-
-# Install pip for Python 3.12
-RUN curl -L https://bootstrap.pypa.io/pip/get-pip.py -o /tmp/get-pip3.py
-
-RUN python3.12 /tmp/get-pip3.py --break-system-packages
-
-RUN python3.12 -m pip install --upgrade pip --break-system-packages
-RUN python3.12 -m pip install numpy scipy pybind11 --break-system-packages
-# RUN python3 -m pip install pybind11==2.9.1 --break-system-packages
-
-
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install numpy scipy pybind11
 
 RUN mkdir /opt/sofa
-RUN git clone --depth 1 -b v24.12 https://github.com/sofa-framework/sofa.git /opt/sofa/src
+RUN git clone --depth 1 -b v24.06 https://github.com/sofa-framework/sofa.git /opt/sofa/src
 
 RUN mkdir /opt/sofa/build
 
 
-RUN cmake -D SOFA_FETCH_SOFAPYTHON3=True -D SOFA_FETCH_BEAMADAPTER=True -D SOFA_FETCH_MULTITHREADING=True -D PYTHON_VERSION=3.12 -D pybind11_DIR=/usr/local/lib/python3.12/dist-packages/pybind11/share/cmake/pybind11/ -D PYTHON_EXECUTABLE=/usr/bin/python3.12 -G "CodeBlocks - Unix Makefiles" -S /opt/sofa/src -B /opt/sofa/build
+RUN cmake -D SOFA_FETCH_SOFAPYTHON3=True -D SOFA_FETCH_BEAMADAPTER=True -D SOFA_FETCH_MULTITHREADING=True -D PYTHON_VERSION=3.10 -D pybind11_DIR=/usr/local/lib/python3.10/dist-packages/pybind11/share/cmake/pybind11/ -D PYTHON_EXECUTABLE=/usr/bin/python3.10 -G "CodeBlocks - Unix Makefiles" -S /opt/sofa/src -B /opt/sofa/build
 RUN cmake -D PLUGIN_SOFAPYTHON3=True -D PLUGIN_BEAMADAPTER=True -D PLUGIN_MULTITHREADING=True -S /opt/sofa/src -B /opt/sofa/build
 
 RUN make -j 4 --directory /opt/sofa/build
 RUN make install --directory /opt/sofa/build
 
-# ENV PYTHONPATH="/opt/sofa/build/install/plugins/SofaPython3/lib/python3/site-packages"
-ENV PYTHONPATH="/opt/sofa/build/lib/python3/site-packages"
+ENV PYTHONPATH="/opt/sofa/build/install/plugins/SofaPython3/lib/python3/site-packages/:/opt/eve_training/:$PYTHONPATH"
 ENV SOFA_ROOT="/opt/sofa/build/install"
-# /:/opt/eve_training/:$PYTHONPATH
-# RUN python3 -m pip install nvidia-cuda-cupti-cu11==11.8.87
-# RUN python3 -m pip install nvidia-cublas-cu11==11.11.3.6
-# RUN python3 -m pip install nvidia_cudnn_cu12==9.1.0.70
+
+# RUN python3 -m pip install nvidia-cuda-cupti-cu11==11.7.101
+# RUN python3 -m pip install nvidia-cublas-cu11==11.10.3.66
+# RUN python3 -m pip install nvidia-cudnn-cu11==8.5.0.96
 # RUN python3 -m pip install nvidia-cufft-cu11==10.9.0.58
-# RUN python3 -m pip install nvidia-curand-cu11==10.3.0.86
-# RUN python3 -m pip install nvidia-cusolver-cu11==11.4.1.48
-# RUN python3 -m pip install nvidia-cusparse-cu11==11.7.5.86
-# RUN python3 -m pip install nvidia-nccl-cu11==2.21.5
+# RUN python3 -m pip install nvidia-curand-cu11==10.2.10.91
+# RUN python3 -m pip install nvidia-cusolver-cu11==11.4.0.1
+# RUN python3 -m pip install nvidia-cusparse-cu11==11.7.4.91
+# RUN python3 -m pip install nvidia-nccl-cu11==2.14.3
 
-# RUN python3 -m pip  install nvidia-cuda-nvrtc-cu11==11.8.89
-# RUN python3 -m pip  install nvidia-cuda-runtime-cu11==11.8.89
-# RUN python3 -m pip  install nvidia-nvtx-cu11==11.8.86
-
-RUN python3 -m pip install nvidia-cuda-cupti-cu12==12.4.127 --break-system-packages
-RUN python3 -m pip install nvidia-cublas-cu12==12.4.5.8 --break-system-packages
-# RUN python3 -m pip install nvidia-cuda-nvcc-cu12==12.1.105
-# RUN python3 -m pip install nvidia-cuda-nvrtc-cu12==12.4.127
-# RUN python3 -m pip install nvidia-cuda-runtime-cu12==12.4.127
-RUN python3 -m pip install nvidia-cudnn-cu12==9.10.1.4 --break-system-packages
-RUN python3 -m pip install nvidia-cufft-cu12==11.2.1.3 --break-system-packages
-RUN python3 -m pip install nvidia-curand-cu12==10.3.5.147 --break-system-packages
-RUN python3 -m pip install nvidia-cusolver-cu12==11.6.1.9 --break-system-packages
-RUN python3 -m pip install nvidia-cusparse-cu12==12.3.1.170 --break-system-packages
-RUN python3 -m pip install nvidia-nccl-cu12==2.21.5 --break-system-packages
-# RUN python3 -m pip install nvidia-nvjitlink-cu12==12.4.127
-# RUN python3 -m pip install nvidia-nvtx-cu12==12.4.127
+RUN python3 -m pip install nvidia-cuda-cupti-cu12==12.3.52
+RUN python3 -m pip install nvidia-cublas-cu12==12.1.0.26
+RUN python3 -m pip install nvidia-cudnn-cu12==8.9.6.50
+RUN python3 -m pip install nvidia-cufft-cu12==11.0.2.4
+RUN python3 -m pip install nvidia-curand-cu12==10.3.2.56
+RUN python3 -m pip install nvidia-cusolver-cu12==11.4.4.55
+RUN python3 -m pip install nvidia-cusparse-cu12==12.0.2.55
+RUN python3 -m pip install nvidia-nccl-cu12==2.18.3
 
 
-RUN python3 -m pip install torch --break-system-packages
-RUN python3 -m pip install torchvision torchaudio --break-system-packages
-RUN python3 -m pip install scipy scikit-image pyvista PyOpenGL PyOpenGL_accelerate pygame matplotlib pillow opencv-python meshio pyyaml optuna gymnasium transforms3d attrdict ujson omegaconf hydra-core termcolor tensordict torchrl --break-system-packages
-# RUN python3 -m pip install hydra-core termcolor tensordict torchrl wandb pandas
+RUN python3 -m pip install torch
+RUN python3 -m pip install torchvision torchaudio
+RUN python3 -m pip install scipy scikit-image pyvista PyOpenGL PyOpenGL_accelerate pygame matplotlib pillow opencv-python meshio pyyaml optuna gymnasium transforms3d attrdict ujson omegaconf hydra-core termcolor tensordict torchrl
+RUN python3 -m pip install hydra-core termcolor tensordict torchrl wandb pandas
 
 RUN apt-get update && \
     apt-get install -yq tzdata && \
@@ -122,26 +92,12 @@ RUN apt-get update && \
 
 
 COPY . /opt/eve_training
-RUN python3 -m pip install /opt/eve_training/eve --break-system-packages
-RUN python3 -m pip install /opt/eve_training/eve_bench --break-system-packages
+RUN python3 -m pip install /opt/eve_training/eve
+# RUN python3 -m pip install /opt/eve_training/eve_bench
 # RUN python3 -m pip install /opt/eve_training/eve_rl
 # RUN python3 -m pip install /opt/eve_training
 
-COPY ./eve/eve/intervention/simulation/util/unit_sphere.stl /usr/local/lib/python3.12/dist-packages/eve/intervention/simulation/util/
-
-# If use linux and run docker on local machine, add the below two lines and use the command
-# sudo docker run --rm -it --env DISPLAY=$DISPLAY --env XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR -v /tmp/.X11-unix:/tmp/.X11-unix steve_test:v0 python3 eve/examples/function_check.py
-ENV XDG_RUNTIME_DIR=/tmp/runtime
-RUN mkdir -p /tmp/runtime
-
 WORKDIR /opt/eve_training
-# WORKDIR /opt/RL
-# WORKDIR /opt/RL-image
-
-# build
-# sudo docker build -t steve_test:v0 .
-# test
-# sudo docker run --rm -it steve_test:v0 python3 eve/examples/function_check.py
 
 # docker buildx build --platform=linux/amd64 -t 10.15.17.136:5555/lnk/eve_training -f ./dockerfile .
 # docker push 10.15.17.136:5555/lnk/eve_training
