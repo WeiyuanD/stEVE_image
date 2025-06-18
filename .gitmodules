@@ -1,9 +1,9 @@
 [submodule "eve_rl"]
 	path = eve_rl
-	url = git@github.com:lkarstensen/eve_rl.git
+	url = git@github.com:WeiyuanD/eve_rl.git
 [submodule "eve_bench"]
 	path = eve_bench
-	url = git@github.com:lkarstensen/eve_bench.git
+	url = git@github.com:WeiyuanD/eve_bench.git
 [submodule "eve"]
 	path = eve
-	url = git@github.com:lkarstensen/eve.git
+	url = git@github.com:WeiyuanD/eve.git
