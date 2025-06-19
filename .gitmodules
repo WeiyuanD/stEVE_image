@@ -1,12 +1,12 @@
 [submodule "eve_rl"]
 	path = eve_rl
-	url = git@github.com:WeiyuanD/eve_rl.git
+	url = https://github.com/WeiyuanD/eve_rl.git
 	branch = main
 [submodule "eve_bench"]
 	path = eve_bench
-	url = git@github.com:WeiyuanD/eve_bench.git
+	url = https://github.com/WeiyuanD/eve_bench.git
 	branch = main
 [submodule "eve"]
 	path = eve
-	url = git@github.com:WeiyuanD/eve.git
+	url = https://github.com/WeiyuanD/eve.git
 	branch = main

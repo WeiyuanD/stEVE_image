@@ -58,10 +58,10 @@ RUN apt install -y \
 # Install pip for Python 3.12
 RUN curl -L https://bootstrap.pypa.io/pip/get-pip.py -o /tmp/get-pip3.py
 
-RUN python3.12 /tmp/get-pip3.py --break-system-packages
+RUN python3.12 /tmp/get-pip3.py
 
-RUN python3.12 -m pip install --upgrade pip --break-system-packages
-RUN python3.12 -m pip install numpy scipy pybind11 --break-system-packages
+RUN python3.12 -m pip install --upgrade pip
+RUN python3.12 -m pip install numpy scipy pybind11
 # RUN python3 -m pip install pybind11==2.9.1 --break-system-packages
 
 
@@ -95,23 +95,23 @@ ENV SOFA_ROOT="/opt/sofa/build/install"
 # RUN python3 -m pip  install nvidia-cuda-runtime-cu11==11.8.89
 # RUN python3 -m pip  install nvidia-nvtx-cu11==11.8.86
 
-RUN python3 -m pip install nvidia-cuda-cupti-cu12==12.4.127 --break-system-packages
-RUN python3 -m pip install nvidia-cublas-cu12==12.4.5.8 --break-system-packages
+RUN python3 -m pip install nvidia-cuda-cupti-cu12==12.4.127
+RUN python3 -m pip install nvidia-cublas-cu12==12.4.5.8
 # RUN python3 -m pip install nvidia-cuda-nvcc-cu12==12.1.105
 # RUN python3 -m pip install nvidia-cuda-nvrtc-cu12==12.4.127
 # RUN python3 -m pip install nvidia-cuda-runtime-cu12==12.4.127
-RUN python3 -m pip install nvidia-cudnn-cu12==9.10.1.4 --break-system-packages
-RUN python3 -m pip install nvidia-cufft-cu12==11.2.1.3 --break-system-packages
-RUN python3 -m pip install nvidia-curand-cu12==10.3.5.147 --break-system-packages
-RUN python3 -m pip install nvidia-cusolver-cu12==11.6.1.9 --break-system-packages
-RUN python3 -m pip install nvidia-cusparse-cu12==12.3.1.170 --break-system-packages
-RUN python3 -m pip install nvidia-nccl-cu12==2.21.5 --break-system-packages
+RUN python3 -m pip install nvidia-cudnn-cu12==9.10.1.4
+RUN python3 -m pip install nvidia-cufft-cu12==11.2.1.3
+RUN python3 -m pip install nvidia-curand-cu12==10.3.5.147
+RUN python3 -m pip install nvidia-cusolver-cu12==11.6.1.9
+RUN python3 -m pip install nvidia-cusparse-cu12==12.3.1.170
+RUN python3 -m pip install nvidia-nccl-cu12==2.21.5
 # RUN python3 -m pip install nvidia-nvjitlink-cu12==12.4.127
 # RUN python3 -m pip install nvidia-nvtx-cu12==12.4.127
 
 
-RUN python3 -m pip install torch --break-system-packages
-RUN python3 -m pip install torchvision torchaudio --break-system-packages
+RUN python3 -m pip install torch
+RUN python3 -m pip install torchvision torchaudio
 RUN python3 -m pip install scipy scikit-image pyvista PyOpenGL PyOpenGL_accelerate pygame matplotlib pillow opencv-python meshio pyyaml optuna gymnasium transforms3d attrdict ujson omegaconf hydra-core termcolor tensordict torchrl --break-system-packages
 # RUN python3 -m pip install hydra-core termcolor tensordict torchrl wandb pandas
 
@@ -122,8 +122,8 @@ RUN apt-get update && \
 
 
 COPY . /opt/eve_training
-RUN python3 -m pip install /opt/eve_training/eve --break-system-packages
-RUN python3 -m pip install /opt/eve_training/eve_bench --break-system-packages
+RUN python3 -m pip install /opt/eve_training/eve
+RUN python3 -m pip install /opt/eve_training/eve_bench
 # RUN python3 -m pip install /opt/eve_training/eve_rl
 # RUN python3 -m pip install /opt/eve_training
 
@@ -131,8 +131,8 @@ COPY ./eve/eve/intervention/simulation/util/unit_sphere.stl /usr/local/lib/pytho
 
 # If use linux and run docker on local machine, add the below two lines and use the command
 # sudo docker run --rm -it --env DISPLAY=$DISPLAY --env XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR -v /tmp/.X11-unix:/tmp/.X11-unix steve_test:v0 python3 eve/examples/function_check.py
-ENV XDG_RUNTIME_DIR=/tmp/runtime
-RUN mkdir -p /tmp/runtime
+# ENV XDG_RUNTIME_DIR=/tmp/runtime
+# RUN mkdir -p /tmp/runtime
 
 WORKDIR /opt/eve_training
 # WORKDIR /opt/RL
