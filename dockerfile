@@ -112,7 +112,8 @@ RUN python3 -m pip install nvidia-nccl-cu12==2.21.5 --break-system-packages
 
 RUN python3 -m pip install torch --break-system-packages
 RUN python3 -m pip install torchvision torchaudio --break-system-packages
-RUN python3 -m pip install scipy scikit-image pyvista PyOpenGL PyOpenGL_accelerate pygame matplotlib pillow opencv-python meshio pyyaml optuna gymnasium transforms3d attrdict ujson omegaconf hydra-core termcolor tensordict torchrl --break-system-packages
+RUN python3 -m pip install scipy scikit-image pyvista PyOpenGL PyOpenGL_accelerate pygame matplotlib pillow opencv-python meshio pyyaml optuna gymnasium transforms3d attrdict ujson omegaconf hydra-core termcolor tensordict torchrl stable-baselines3 --break-system-packages 
+
 # RUN python3 -m pip install hydra-core termcolor tensordict torchrl wandb pandas
 
 RUN apt-get update && \
@@ -178,4 +179,16 @@ WORKDIR /opt/eve_training
  
  
 # runai submit --name eve-training1 --image aicregistry:5000/hrobertshaw:sofa-docker --run-as-user --gpu 2 --large-shm --project hrobertshaw -v /nfs:/nfs --command -- python3 /nfs/home/hrobertshaw/eve_training/eve_training/eve_paper/neurovascular/full/train_mesh_ben_two_device.py -nw 20 -d cuda -n test -lr 0.00021989352630306626 --hidden 900 900 900 900 -en 500 -el 1
+
+# runai submit --name ppo-big --image aicregistry:5000/agranados:sofa-docker --run-as-user --gpu 1 --cpu 6 --large-shm --project agranados -v /nfs:/nfs --command -- python3 /nfs/home/agranados/projects/RL/Scripts/batch_eleven/evaluate_PPO_model11_archvariety.py
+
+# runai submit --name a2c-image --image aicregistry:5000/agranados:steve-img-docker --run-as-user --gpu 1 --cpu 6 --large-shm --project agranados -v /nfs:/nfs --command -- python /nfs/home/agranados/projects/RL-Image/stEVE_image/eve_bench/run/train_A2C_archvariety_image_v2.py
+
+# runai describe job a2c-image -p agranados
+
+# runai delete job a2c-image
+
+# runai logs a2c-image
+
+
 

@@ -1,9 +1,9 @@
-!\bin\bash
+#!\bin\bash
 
-tag=aicregistry:5000/${USER}:sofa-docker
+tag=aicregistry:5000/${USER}:steve-img-docker
 docker build . -f Dockerfile \
 --tag ${tag} --network=host \
---build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --network=host --bui>
+--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) --network=host --build-arg USER=${USER}
 docker push ${tag}
 
 # #!/bin/bash
