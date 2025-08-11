@@ -10,6 +10,7 @@ class BenchEnv(eve.Env):
         visualisation: bool = False,
         n_max_steps=1000,
     ) -> None:
+        
         self.mode = mode
         self.visualisation = visualisation
         start = eve.start.InsertionPoint(intervention)
