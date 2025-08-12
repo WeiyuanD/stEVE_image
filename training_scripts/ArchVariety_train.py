@@ -7,7 +7,7 @@ import torch
 from util.env import BenchEnv
 from util.util import get_result_checkpoint_config_and_log_path
 from util.agent import BenchAgentSynchron
-from eve_rl import Runner
+from eve_rl.eve_rl import Runner
 from eve_bench import ArchVariety
 
 
@@ -139,8 +139,8 @@ if __name__ == "__main__":
     intervention = ArchVariety()
     intervention2 = deepcopy(intervention)
 
-    env_train = BenchEnv(intervention=intervention, mode="train", visualisation=False)
-    env_eval = BenchEnv(intervention=intervention2, mode="eval", visualisation=False)
+    env_train = BenchEnv(intervention=intervention, mode="train", visualisation=True)
+    env_eval = BenchEnv(intervention=intervention2, mode="eval", visualisation=True)
 
     agent = BenchAgentSynchron(
         trainer_device,

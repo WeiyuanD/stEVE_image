@@ -1,5 +1,5 @@
 from torch import optim
-import eve_rl
+import eve_rl.eve_rl as eve_rl
 import eve
 import numpy as np
 
