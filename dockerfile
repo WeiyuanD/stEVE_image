@@ -194,5 +194,7 @@ WORKDIR /opt/eve_training
 
 # runai logs a2c-image
 
+# normalized action steve-img-docker
+# unnormalize action steve-img
 
 
