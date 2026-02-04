@@ -4,9 +4,9 @@
 	branch = main
 [submodule "eve_bench"]
 	path = eve_bench
-	url = https://github.com/WeiyuanD/eve_bench.git
+	url = git@github.com:WeiyuanD/eve_bench.git
 	branch = main
 [submodule "eve"]
 	path = eve
-	url = https://github.com/WeiyuanD/eve.git
+	url = git@github.com:WeiyuanD/eve.git
 	branch = main
