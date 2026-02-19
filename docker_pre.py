@@ -135,3 +135,4 @@ WORKDIR /opt/eve_training
  
 # runai submit --name eve-training1 --image aicregistry:5000/hrobertshaw:sofa-docker --run-as-user --gpu 2 --large-shm --project hrobertshaw -v /nfs:/nfs --command -- python3 /nfs/home/hrobertshaw/eve_training/eve_training/eve_paper/neurovascular/full/train_mesh_ben_two_device.py -nw 20 -d cuda -n test -lr 0.00021989352630306626 --hidden 900 900 900 900 -en 500 -el 1
 
+# runai submit --name sac-a3l-mesh4 --image aicregistry:5000/hrobertshaw:sofa-docker --run-as-user --gpu 1 --cpu 6 --large-shm --project hrobertshaw -v /nfs:/nfs --command -- python3 /nfs/home/hrobertshaw/eve_training/eve_training/eve_paper/neurovascular/full/train_multi_mesh_generator.py -nw 20 -d cuda -n sac-a3l-mesh4 -lr 0.00021989352630306626 --hidden 900 900 900 900 -en 500 -el 1 -type dense -force False --train_mesh 4 --eval_mesh 4 --env_type A3_L -prob 1 -dev 2

@@ -31,10 +31,10 @@ RUN apt-get install -y \
     build-essential \
     software-properties-common
 
-# #Install SOFA Dependencies
+# Install SOFA Dependencies
 RUN apt install -y \
     gcc-11 \
-    g++-11 \ 
+    g++-11 \
     cmake \
     # qt5-default \
     qtbase5-dev \
@@ -180,6 +180,8 @@ WORKDIR /opt/eve_training
 # docker run --label=lnk_training --gpus all --rm --mount type=bind,source=$PWD/results,target=/opt/lnk_training/results --shm-size 15G -d 10.15.17.136:5555/lnk/eve_training python3 ./eve_training/eve_paper/neurovascular/aorta/gw_only/typeI_optuna_hyerparam.py -d cuda -nw 35 -n typeI_archgen_optuna
 # docker run --label=lnk_training --gpus all --rm --mount type=bind,source=$PWD/results,target=/opt/lnk_training/results --shm-size 15G -d 10.15.17.136:5555/lnk/eve_training python3 ./eve_training/eve_paper/neurovascular/aorta/gw_only/optuna_hyperparam.py -d cuda:1 -nw 35 -n typeI_archgen_optuna
  
+# runai submit --name sac-a3l-mesh4 --image aicregistry:5000/hrobertshaw:sofa-docker --run-as-user --gpu 1 --cpu 6 --large-shm --project hrobertshaw -v /nfs:/nfs --command -- python3 /nfs/home/hrobertshaw/eve_training/eve_training/eve_paper/neurovascular/full/train_multi_mesh_generator.py -nw 20 -d cuda -n sac-a3l-mesh4 -lr 0.00021989352630306626 --hidden 900 900 900 900 -en 500 -el 1 -type dense -force False --train_mesh 4 --eval_mesh 4 --env_type A3_L -prob 1 -dev 2
+
 # bash build.sh 
 
 # runai submit --name eve-training1 --image aicregistry:5000/hrobertshaw:sofa-docker --run-as-user --gpu 2 --large-shm --project hrobertshaw -v /nfs:/nfs --command -- python3 /nfs/home/hrobertshaw/eve_training/eve_training/eve_paper/neurovascular/full/train_mesh_ben_two_device.py -nw 20 -d cuda -n test -lr 0.00021989352630306626 --hidden 900 900 900 900 -en 500 -el 1
