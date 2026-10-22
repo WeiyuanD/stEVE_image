@@ -1,0 +1,6 @@
+# Original image training settings with two frames and one previous action.
+extends: image_single.yaml
+env:
+  frame_stack: 2
+  include_previous_action: true
+  action_stack: 1

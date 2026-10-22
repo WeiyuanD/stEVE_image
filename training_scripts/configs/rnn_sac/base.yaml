@@ -1,0 +1,67 @@
+seed: 0
+device: cuda
+
+agent:
+  kind: single
+  n_worker: 2
+  worker_device: cpu
+  consecutive_action_steps: 1
+  timeout_worker_after_reaching_limit: 180
+
+runner:
+  heatup_action_low: null
+  heatup_action_high: null
+  info_results: [success, path_ratio, steps]
+
+env:
+  obs: image
+  frame_stack: 1
+  include_previous_action: true
+  action_stack: 1
+  mode: train
+  eval_mode: train
+  simulation_mp: false
+  insertion_config: null  # Preserve branch-start insertion; a mapping enables random insertion.
+  image_augmentation: null  # Disabled; see fluoro_augmentation.yaml for available fields.
+  n_max_steps: 200
+
+network:
+  cnn_channels: [16, 32, 32, 32]
+  feature_dim: 256
+  action_fusion: concat
+  hidden_size: 700
+  num_layers: 1
+  mlp_hidden: [400, 400, 400]
+
+learning:
+  lr: 0.0003217978434614328
+  lr_end_factor: 0.15
+  lr_decay_updates: 6000000
+  gamma: 0.99
+  reward_scaling: 1
+  exploration_action_noise: 0.25
+  stochastic_eval: false
+
+replay:
+  capacity_episodes: 200
+  batch_size: 4
+
+training:
+  heatup_steps: 5000
+  training_steps: 10000000
+  explore_steps_between_eval: 25000
+  explore_episodes_between_updates: 1
+  update_steps_per_explore_step: 0.05
+  eval_seeds: [10001, 10002, 10003, 10004, 10005, 10006, 10007, 10008, 10009, 10010]
+
+logging:
+  enable_wandb: true
+  project: rnn-sac
+  entity: null  # Uses your W&B default entity; set your username/team if needed.
+  name: null  # Defaults to the output directory name.
+  group: null  # Defaults to observation type and frame stack.
+  mode: online  # online or offline
+  save_csv: true
+  save_video: true
+  video_eval_seeds: null  # First two configured evaluation seeds; [] disables capture.
+  save_agent: true  # Upload best checkpoint as a W&B artifact.

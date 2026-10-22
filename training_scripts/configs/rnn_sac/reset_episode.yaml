@@ -1,0 +1,4 @@
+# LSTM reset scope only; simulator resets remain identical across modes.
+base_config: eval_seeds.yaml
+reset_mode: episode
+runs: 10

@@ -1,0 +1,4 @@
+extends: base.yaml
+env:
+  obs: image
+  frame_stack: 2

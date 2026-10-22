@@ -1,0 +1,28 @@
+# Match the state training/evaluation protocol, with resource concessions.
+# Inherits the state preset's 100 evaluation seeds, heatup action bounds,
+# 500,000 heatup steps, 50,000-step evaluation interval, and update schedule.
+extends: state.yaml
+device: cuda
+
+agent:
+  kind: single
+  n_worker: 1  # Single ignores this field; only one environment acts at a time.
+
+env:
+  obs: image
+  frame_stack: 2
+  include_previous_action: true
+  action_stack: 1
+  simulation_mp: false
+  n_max_steps: 150
+  eval_n_max_steps: 450
+  eval_mode: eval
+  image_augmentation: null
+
+replay:
+  # Inherit state.yaml's capacity (currently 10,000 episodes).
+  # Image replay uses uint8 pixels and separate float32 previous actions.
+  # About 26 GiB for two-frame images at 10,000 full 150-step episodes.
+  # Heatup also retains episodes temporarily; this is not total RAM usage.
+  # Full-episode CNN/LSTM batches; increase only after measuring GPU memory.
+  batch_size: 4
